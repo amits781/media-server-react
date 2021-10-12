@@ -1,0 +1,23 @@
+.left_container{
+    padding: 0 30px;;
+}
+
+.left_container .heading{
+    color: whitesmoke
+}
+
+.left_container .desc{
+    color: rgb(206, 206, 206)
+}
+.right_container{
+    padding-right: 30px;
+}
+.right_container img{
+    height: 95%;
+    width: 95%;
+}
+
+.MuiRating-iconEmpty svg{
+    color: blanchedalmond;
+}
+

@@ -1,0 +1,26 @@
+/* .container_main{
+    display: flex;
+    height: 100%;   
+}
+
+.left_container{
+    flex: 2;
+}
+
+.left_container .heading{
+    color: whitesmoke
+}
+
+.left_container .desc{
+    color: rgb(206, 206, 206)
+}
+
+.right_container{
+    align-self: center;
+}
+
+.right_container img{
+    height: 100%;
+    width: 100%;
+}
+ */
