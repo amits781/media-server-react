@@ -2,6 +2,7 @@ import Box from "@mui/material/Box";
 import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import MediaCard from "./Components/Cards/Cards";
+import {getServerIP} from "./Components/Utils/Utils";
 
 function App() {
 
@@ -12,21 +13,17 @@ function App() {
   var style = {
     box: {
       padding: "200px 0px",
-      // backgroundImage: `url(${Background})`,
     }
   }
 
   useEffect(() => {
-    fetch("https://api.themoviedb.org/3/search/movie?api_key=c67f5d2a41ecf5fdf236291e8c7e3fc0&query=venom")
+    fetch(`http://${getServerIP()}:8080/movies`)
       .then(res => res.json())
       .then(
         (result) => {
           setIsLoaded(true);
-          setItems(result.results);
+          setItems(result);
         },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
         (error) => {
           setIsLoaded(true);
           setError(error);

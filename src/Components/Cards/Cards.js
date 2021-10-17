@@ -3,25 +3,12 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { CardActionArea, Chip } from '@mui/material';
-import { getImagePath , getPosterImagePath} from '../Utils/Utils';
+import { CardActionArea} from '@mui/material';
+import { getImagePath} from '../Utils/Utils';
 import { useHistory } from 'react-router-dom'
 import './Cards.css';
 
 export default function MediaCard(props) {
-  // const styleModal = {
-  //   position: 'absolute',
-  //   top: '50%',
-  //   left: '50%',
-  //   transform: 'translate(-50%, -50%)',
-  //   width: 1000,
-  //   height: 575,
-  //   bgcolor: 'background.paper',
-  //   border: '2px solid #000',
-  //   boxShadow: 24,
-  //   p: 4,
-  // };
-
   var style = {
     mediaCard:{
       marginLeft: "auto",
@@ -46,15 +33,9 @@ export default function MediaCard(props) {
       overflow: 'hidden',
       textOverflow: 'ellipsis',
     },
-    // modalBackground : {
-    //   backgroundColor: "#000000",
-    //   backgroundImage: "linear-gradient(147deg, #000000 0%, #434343 74%)",
-    //   border: '2px solid white',
-    // }
   }
 
   const history = useHistory();
-
   const handleOnSubmit = () => {
     history.push(`/details/${props.id}`);
   };
@@ -65,55 +46,19 @@ export default function MediaCard(props) {
         <CardMedia
           component="img"
           height="140"
-          image={getImagePath(props.backdrop_path)}
+          image={getImagePath(props.backDropImage)}
           alt="green iguana"
           style={{borderColor: "grey", border: '2px solid'}}>
         </CardMedia>
         <CardContent>
           <Typography style={style.movieTitle} gutterBottom variant="h5" color="#f5f5f5" component="div">
-            {props.title}
+            {props.movieName}
           </Typography>
           <Typography variant="body2" color="#f5f5f5" style={style.typographyElip} >
-            {props.overview}
+            {props.description}
           </Typography>
         </CardContent>
       </CardActionArea>
-      {/* <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={open}>
-          <Box sx={styleModal} style={style.modalBackground}>
-          <div className="container_main">
-            <div className="left_container">
-              <div className="heading">
-                <h1>{props.title}</h1>
-              </div>
-              <div className="info">
-                <Chip style= {{color: "white"}} label={props.vote_average} variant="outlined" />
-              </div>
-              <div className="desc">
-                <p>{props.overview}</p>
-              </div>
-              <video width="320" height="240" poster={getImagePath(props.backdrop_path)} controls>
-                  <source src="https://www.w3schools.com/html/movie.mp4" type="video/mp4"/>
-                  Your browser does not support the video tag.
-                </video>
-            </div>
-            <div className="right_container">
-            <img src={getPosterImagePath(props.poster_path)}></img>
-            </div>
-          </div>
-          </Box>
-        </Fade>
-      </Modal> */}
     </Card>
   );
 }
