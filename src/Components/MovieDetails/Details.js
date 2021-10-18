@@ -46,7 +46,7 @@ function Details() {
           setError(error);
         }
       )
-  },[])
+  },[id])
 
   if (error) {
     return <div>Error: {error.message}</div>;
@@ -96,7 +96,7 @@ function Details() {
                   Your browser does not support the video tag.
               </video>
               <div className="heading">
-                <h1>{items.movieName} 22</h1>
+                <h1>{items.movieName}</h1>
               </div>
               <div className="info">
                 <Rating name="read-only" value={items.rating/2} readOnly />

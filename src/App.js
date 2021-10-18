@@ -3,13 +3,15 @@ import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import MediaCard from "./Components/Cards/Cards";
 import {getServerIP} from "./Components/Utils/Utils";
+import { getCookie } from './Components/Utils/Utils';
 
 function App() {
 
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
-
+  const cookieValue = getCookie() === undefined ? false: getCookie();
+  const urlToFetchMovies = cookieValue? `http://${getServerIP()}:8080/movies?exp=true` : `http://${getServerIP()}:8080/movies?exp=false`;
   var style = {
     box: {
       padding: "200px 0px",
@@ -17,7 +19,7 @@ function App() {
   }
 
   useEffect(() => {
-    fetch(`http://${getServerIP()}:8080/movies`)
+    fetch(urlToFetchMovies)
       .then(res => res.json())
       .then(
         (result) => {
@@ -29,7 +31,7 @@ function App() {
           setError(error);
         }
       )
-  }, [])
+  }, [urlToFetchMovies])
 
   if (error) {
     return <div>Error: {error.message}</div>;

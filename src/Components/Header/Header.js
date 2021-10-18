@@ -4,10 +4,16 @@ import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import CssBaseline from '@mui/material/CssBaseline';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import ScrollZoomText from '../Utils/ScrollZoomText';
 import Background from '../../Assets/bg_main.jpg';
+import { Box } from '@mui/system';
+import { getCookie, setCookie, deleteCookie} from '../Utils/Utils';
+import IconButton from '@mui/material/IconButton';
+import MoreIcon from '@mui/icons-material/MoreVert';
+import Menu from '@mui/material/Menu';
+import Switch from '@mui/material/Switch';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 function ElevationScroll(props) {
   const { children, window } = props;
@@ -36,20 +42,77 @@ ElevationScroll.propTypes = {
 };
 
 export default function ElevateAppBar(props) {
+  const cookieValue = getCookie() === undefined ? false: getCookie();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [auth, setAuth] = React.useState(cookieValue);
+
+  const handleChange = (event) => {
+    setAuth(event.target.checked);
+    if(event.target.checked)
+      setCookie(event.target.checked);
+    else
+      deleteCookie();
+    window.location.reload();
+  };
+
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
     <React.Fragment>
-      <CssBaseline />
+      <Box sx={{ flexGrow: 1 }}>
       <ElevationScroll {...props}>
-        <AppBar  position="fixed" >
-          <Toolbar style={{backgroundColor: "transparent"}}>
-              <ScrollZoomText>
-                <Typography variant="h6" component="div" >
-                    Media Home
-                </Typography>
-            </ScrollZoomText>
-          </Toolbar>
-        </AppBar>
+      <AppBar position="fixed">
+        <Toolbar>
+          <ScrollZoomText>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          Media Home
+          </Typography>
+          </ScrollZoomText>
+          <IconButton
+            size="large"
+            aria-label="display more actions"
+            edge="end"
+            color="inherit"
+            onClick={handleMenu}
+          >
+            <MoreIcon />
+          </IconButton>
+          <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={auth}
+                      onChange={handleChange}
+                      aria-label="login switch"
+                    />
+                  }
+                  label={auth ? 'Logout' : 'Login'}
+                />
+              </Menu>
+        </Toolbar>
+      </AppBar>
       </ElevationScroll>
+    </Box>
     </React.Fragment>
+    
   );
 }
