@@ -63,7 +63,7 @@ function Details() {
           columns={{ xs: 1, sm: 4, md: 6, lg: 12 }}
           
         >
-          <Grid item xs={1} sm={4} md={6} lg={9}>
+          <Grid item display={{ xs: "none", md: "block" }} xs={1} sm={4} md={6} lg={9}>
             <div className="left_container">
               <div className="heading">
                 <h1>{items.movieName}</h1>
@@ -71,14 +71,14 @@ function Details() {
               <div className="info">
                 <Rating name="read-only" value={items.rating/2} readOnly />
                 <p>
-                  {items.genre?.map(genre => <Chip style= {{color: "white"}} label={genre.name} variant="outlined" />
+                  {items.genre?.map(genre => <Chip style= {{color: "white",marginRight: "5px"}} label={genre.name} variant="outlined" />
                     )}
                 </p>
               </div>
               <div className="desc">
                 <p>{items.description}</p>
               </div>
-              <video width="80%" height="95%" poster={getImagePath(items.backDropImage)} controls>
+              <video width="80%" height="95%" poster={getImagePath(items.backDropImage)} controls preload="metadata">
                   <source src={items.moviePath} type="video/mp4"/>
                   Your browser does not support the video tag.
                 </video>
@@ -87,6 +87,27 @@ function Details() {
             <Grid item display={{ xs: "none", lg: "block" }} xs={1} sm={2} md={3} lg={3}>
             <div className="right_container">
                 <img src={getPosterImagePath(items.posterImage)} alt="Poster"></img>
+            </div>
+            </Grid>
+            <Grid display={{ xs: "block", md: "none" }} item xs={1} sm={4} md={6} lg={9}>
+            <div className="left_container">
+              <video width="100%" height="240px" poster={getImagePath(items.backDropImage)} controls preload="metadata">
+                  <source src={items.moviePath} type="video/mp4"/>
+                  Your browser does not support the video tag.
+              </video>
+              <div className="heading">
+                <h1>{items.movieName} 22</h1>
+              </div>
+              <div className="info">
+                <Rating name="read-only" value={items.rating/2} readOnly />
+                <p>
+                  {items.genre?.map(genre => <Chip style= {{color: "white",marginRight: "5px"}} label={genre.name} variant="outlined" />
+                    )}
+                </p>
+              </div>
+              <div className="desc">
+                <p>{items.description}</p>
+              </div>
             </div>
             </Grid>
         </Grid>
