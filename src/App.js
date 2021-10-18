@@ -24,6 +24,7 @@ function App() {
       .then(
         (result) => {
           setIsLoaded(true);
+          result.sort((a, b) => a.id - b.id);
           setItems(result);
         },
         (error) => {
