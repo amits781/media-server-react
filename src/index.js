@@ -26,6 +26,7 @@ ReactDOM.render(
       <Router>
         <Switch>
           <Route exact path="/" children={<App />} />
+          <Route exact path="/:exp" children={<App />} />
           <Route path="/details/:id" children={<Details />} />
         </Switch>
       {/* <App /> */}

@@ -8,12 +8,19 @@ import useScrollTrigger from '@mui/material/useScrollTrigger';
 import ScrollZoomText from '../Utils/ScrollZoomText';
 import Background from '../../Assets/bg_main.jpg';
 import { Box } from '@mui/system';
-import { getCookie, setCookie, deleteCookie} from '../Utils/Utils';
+import { getCookie, setCookie, deleteCookie, setFilterCookie, getFilterCookie, deleteFilterCookie} from '../Utils/Utils';
 import IconButton from '@mui/material/IconButton';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import Menu from '@mui/material/Menu';
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import { Divider, Link } from '@mui/material';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Check from '@mui/icons-material/Check';
+import ExplicitIcon from '@mui/icons-material/Explicit';
+import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
 
 function ElevationScroll(props) {
   const { children, window } = props;
@@ -42,17 +49,29 @@ ElevationScroll.propTypes = {
 };
 
 export default function ElevateAppBar(props) {
-  const cookieValue = getCookie() === undefined ? false: getCookie();
+  const cookieValue = getCookie() === undefined ? false: true;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [auth, setAuth] = React.useState(cookieValue);
+
+  const handleFilterChange = (event) => {
+    var filterName = event.target.parentElement.id;
+    if(filterName === "sortnone"){
+      deleteFilterCookie();
+    } else {
+      setFilterCookie(event.target.parentElement.id);
+    }
+    window.location.reload();
+  };
 
   const handleChange = (event) => {
     setAuth(event.target.checked);
     if(event.target.checked)
       setCookie(event.target.checked);
-    else
+    else{
       deleteCookie();
-    window.location.reload();
+      window.location.assign("/")
+    }
+    // window.location.reload();
   };
 
   const handleMenu = (event) => {
@@ -68,11 +87,16 @@ export default function ElevateAppBar(props) {
       <ElevationScroll {...props}>
       <AppBar position="fixed">
         <Toolbar>
-          <ScrollZoomText>
+          <ScrollZoomText addInfo={{"isMenu":false}}>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           Media Home
           </Typography>
           </ScrollZoomText>
+          {/* <ScrollZoomText addInfo={{"isMenu":true}}>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          Menu 1
+          </Typography>
+          </ScrollZoomText> */}
           <IconButton
             size="large"
             aria-label="display more actions"
@@ -106,8 +130,70 @@ export default function ElevateAppBar(props) {
                     />
                   }
                   label={auth ? 'Logout' : 'Login'}
-                />
-              </Menu>
+                />               
+                 <Divider />
+                 <MenuItem>
+                  <ListItemIcon>
+                    <FamilyRestroomIcon />
+                  </ListItemIcon> 
+                  <ListItemText>
+                      <Link  href="/" color="inherit" underline={window.location.pathname==="/"? "always" : "none"}>
+                        {'All Movies'}
+                      </Link>
+                  </ListItemText>
+                </MenuItem>
+                {auth ? <MenuItem>
+                  <ListItemIcon>
+                    <ExplicitIcon />
+                  </ListItemIcon> 
+                  <ListItemText>
+                    <Link href="/exp" color="inherit" underline={window.location.pathname==="/exp"? "always" : "none"}>
+                      {'Exp Movies'}
+                    </Link>
+                  </ListItemText>
+                </MenuItem>: ""}
+                <Divider />
+                <MenuItem>
+                  {getFilterCookie()===undefined? 
+                  <ListItemIcon>
+                    <Check />
+                  </ListItemIcon> : "" 
+                  }
+                  <ListItemText  inset={getFilterCookie()!==undefined} id={'sortnone'} onClick={handleFilterChange}>None</ListItemText>
+                </MenuItem>
+                <MenuItem>
+                  {getFilterCookie()==='dateasc'? 
+                  <ListItemIcon>
+                    <Check />
+                  </ListItemIcon> : "" 
+                  }
+                  <ListItemText inset={getFilterCookie()!=='dateasc'} id={'dateasc'} onClick={handleFilterChange}>Oldest First</ListItemText>
+                </MenuItem>
+                <MenuItem>
+                  {getFilterCookie()==='datedesc'? 
+                  <ListItemIcon>
+                    <Check />
+                  </ListItemIcon> : "" 
+                  }
+                  <ListItemText inset={getFilterCookie()!=='datedesc'} id={'datedesc'} onClick={handleFilterChange}>Newest First</ListItemText>
+                </MenuItem>
+                <MenuItem>
+                  {getFilterCookie()==='nameasc'? 
+                  <ListItemIcon>
+                    <Check />
+                  </ListItemIcon> : "" 
+                  }
+                  <ListItemText  inset={getFilterCookie()!=='nameasc'} id={'nameasc'} onClick={handleFilterChange}>Name Asc</ListItemText>
+                </MenuItem>
+                <MenuItem>
+                  {getFilterCookie()==='namedesc'? 
+                  <ListItemIcon>
+                    <Check />
+                  </ListItemIcon> : "" 
+                  }
+                  <ListItemText  inset={getFilterCookie()!=='namedesc'} id={'namedesc'} onClick={handleFilterChange}>Name Desc</ListItemText>
+                </MenuItem>
+            </Menu>
         </Toolbar>
       </AppBar>
       </ElevationScroll>

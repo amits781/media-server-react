@@ -1,5 +1,6 @@
 // const someCommonValues = ['common', 'values'];
 const logingUserCookie = "userLoggedIn";
+const filterUserCookie = "userFilter";
 
 export const getImagePath = (path) => {
    return `https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces/${ path}`;
@@ -27,8 +28,27 @@ export const setCookie = (cvalue) => {
    if (parts.length === 2) return parts.pop().split(';').shift();
  }
 
+ export const setFilterCookie = (cvalue) => {
+   const d = new Date();
+   // d.setTime(d.getTime() + (exdays*24*60*60*1000));
+   d.setTime(d.getTime() + (30*24*60*60*1000));
+   let expires = "expires="+ d.toUTCString();
+   document.cookie = filterUserCookie + "=" + cvalue + ";" + expires + ";path=/";
+ };
+
+ export const getFilterCookie = () => {
+   const value = `; ${document.cookie}`;
+   const parts = value.split(`; ${filterUserCookie}=`);
+   if (parts.length === 2) return parts.pop().split(';').shift();
+ }
+
  export const deleteCookie = () => {
    let expires = "expires=Thu, 01 Jan 1970 00:00:00 UTC";
    document.cookie = logingUserCookie + "=;" + expires + ";path=/";
  };
+
+ export const deleteFilterCookie = () => {
+  let expires = "expires=Thu, 01 Jan 1970 00:00:00 UTC";
+  document.cookie = filterUserCookie + "=;" + expires + ";path=/";
+};
  

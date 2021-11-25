@@ -3,15 +3,17 @@ import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import MediaCard from "./Components/Cards/Cards";
 import {getServerIP} from "./Components/Utils/Utils";
-import { getCookie } from './Components/Utils/Utils';
+import { getFilterCookie } from './Components/Utils/Utils';
+import { useParams } from "react-router-dom";
 
 function App() {
 
+  let {exp} = useParams();
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
-  const cookieValue = getCookie() === undefined ? false: getCookie();
-  const urlToFetchMovies = cookieValue? `http://${getServerIP()}:8080/movies?exp=true` : `http://${getServerIP()}:8080/movies?exp=false`;
+  const filterResult = getFilterCookie() === undefined ? false: true;
+  const urlToFetchMovies = exp? `http://${getServerIP()}:8080/movies?exp=true` : `http://${getServerIP()}:8080/movies?exp=false`;
   var style = {
     box: {
       padding: "200px 0px",
@@ -24,15 +26,29 @@ function App() {
       .then(
         (result) => {
           setIsLoaded(true);
-          result.sort((a, b) => a.id - b.id);
-          setItems(result);
+          // if(exp){
+          //   result.filter(movie => word.length > 6)
+          // } else {
+            
+          // }
+          if(filterResult){
+            if(getFilterCookie()==='dateasc')
+              result.sort((a, b) => a.id - b.id);
+            else if(getFilterCookie()==='datedesc')
+              result.sort((a, b) => b.id - a.id);
+            else  if(getFilterCookie()==='nameasc')
+              result.sort((a, b) => a.movieName.localeCompare(b.movieName));
+            else if(getFilterCookie()==='namedesc')
+              result.sort((a, b) => b.movieName.localeCompare(a.movieName));
+          }
+          setItems(result); 
         },
         (error) => {
           setIsLoaded(true);
           setError(error);
         }
       )
-  }, [urlToFetchMovies])
+  }, [urlToFetchMovies,filterResult])
 
   if (error) {
     return <div>Error: {error.message}</div>;
