@@ -11,7 +11,7 @@ export const getPosterImagePath = (path) => {
 };
 
 export const getServerIP = () => {
-   return `192.168.0.109`;
+   return `192.168.0.105`;
 };
 
 export const setCookie = (cvalue) => {

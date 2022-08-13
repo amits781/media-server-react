@@ -18,9 +18,11 @@ import { Divider, Link } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import Check from '@mui/icons-material/Check';
 import ExplicitIcon from '@mui/icons-material/Explicit';
 import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
+import {getServerIP} from "../Utils/Utils";
 
 function ElevationScroll(props) {
   const { children, window } = props;
@@ -81,6 +83,20 @@ export default function ElevateAppBar(props) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleRefreshList = () => {
+    fetch(`http://${getServerIP()}:8080/process`)
+      .then(res => res.json())
+      .then(
+        (result) => {
+          console.log("Fetch Successfull:"+result);
+        },
+        (error) => {
+          console.log("Error"+error);
+        }
+      )
+  };
+
   return (
     <React.Fragment>
       <Box sx={{ flexGrow: 1 }}>
@@ -134,6 +150,16 @@ export default function ElevateAppBar(props) {
                  <Divider />
                  <MenuItem>
                   <ListItemIcon>
+                    <RefreshIcon />
+                  </ListItemIcon> 
+                  <ListItemText
+                    onClick={() => handleRefreshList()}
+                  >
+                        {'Refresh Movies'}
+                  </ListItemText>
+                </MenuItem>
+                 <MenuItem>
+                  <ListItemIcon>
                     <FamilyRestroomIcon />
                   </ListItemIcon> 
                   <ListItemText>
@@ -142,6 +168,7 @@ export default function ElevateAppBar(props) {
                       </Link>
                   </ListItemText>
                 </MenuItem>
+                
                 {auth ? <MenuItem>
                   <ListItemIcon>
                     <ExplicitIcon />
